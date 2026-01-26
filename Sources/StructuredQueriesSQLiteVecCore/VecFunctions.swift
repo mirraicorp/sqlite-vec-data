@@ -3,6 +3,7 @@ import StructuredQueriesCore
 /// A namespace for SQLiteVec SQL functions.
 public enum Vec {
   /// Returns the L2 distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_l2` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -23,6 +24,7 @@ public enum Vec {
   }
 
   /// Returns the L1 distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_l1` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -43,6 +45,7 @@ public enum Vec {
   }
 
   /// Returns the cosine distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_cosine` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -63,6 +66,7 @@ public enum Vec {
   }
 
   /// Returns the Hamming distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_hamming` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -83,6 +87,7 @@ public enum Vec {
   }
 
   /// Returns the length of a vector expression.
+  /// This calls sqlite-vec's `vec_length` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -99,6 +104,7 @@ public enum Vec {
   }
 
   /// Returns the sqlite-vec type string for a vector expression.
+  /// This calls sqlite-vec's `vec_type` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -115,6 +121,7 @@ public enum Vec {
   }
 
   /// Returns a JSON string for a vector expression.
+  /// This calls sqlite-vec's `vec_to_json` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -131,6 +138,7 @@ public enum Vec {
   }
 
   /// Adds a query vector to an expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_add` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -153,6 +161,7 @@ public enum Vec {
   }
 
   /// Adds a query vector to an expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_add` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -173,6 +182,7 @@ public enum Vec {
   }
 
   /// Subtracts a query vector from an expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_sub` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -195,6 +205,7 @@ public enum Vec {
   }
 
   /// Subtracts a query vector from an expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_sub` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -215,6 +226,7 @@ public enum Vec {
   }
 
   /// Extracts a slice from a vector expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -238,6 +250,7 @@ public enum Vec {
   }
 
   /// Extracts a slice from a vector expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -264,6 +277,7 @@ public enum Vec {
   }
 
   /// Normalizes a vector expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_normalize` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -283,6 +297,7 @@ public enum Vec {
   }
 
   /// Normalizes a vector expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_normalize` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -299,6 +314,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an f32 representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_f32` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -318,6 +334,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an f32 representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_f32` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -334,6 +351,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to a bit representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_bit` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -353,6 +371,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to a bit representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_bit` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -369,6 +388,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an int8 representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -388,6 +408,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an int8 representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -404,6 +425,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to int8 and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_quantize_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -425,6 +447,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to int8 and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_quantize_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -448,6 +471,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to a binary representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_quantize_binary` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -467,6 +491,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to a binary representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_quantize_binary` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
