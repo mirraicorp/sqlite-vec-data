@@ -4,10 +4,16 @@ import StructuredQueriesCore
 
 /// A table backed by a sqlite-vec vec0 virtual table.
 ///
+/// Vec0 tracks the metadata vec0 needs for columns that store embeddings and
+/// surfaces helpers such as `.distance`, `.k`, and `.match`, so you write
+/// similarity queries with structured SQL instead of touching raw byte blobs.
+///
+/// First, create a virtual table using the `vec0` module:
 /// ```sql
 /// CREATE VIRTUAL TABLE "Embeddings" USING vec0(embedding FLOAT[1536]);
 /// ```
 ///
+/// Then, define your table using the `@Table` attribute:
 /// ```swift
 /// @Table("Embeddings")
 /// struct Embedding: Vec0 {

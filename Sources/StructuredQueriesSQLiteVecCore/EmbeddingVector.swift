@@ -20,10 +20,12 @@ import StructuredQueriesCore
   /// Generally, prefer this type over using `InlineArray` if you want Hashability and Codable
   /// support.
   ///
+  /// First, create a virtual table using the `vec0` module:
   /// ```sql
   /// CREATE VIRTUAL TABLE documents USING vec0(id TEXT PRIMARY KEY, embedding FLOAT[1536]);
   /// ```
   ///
+  /// Then, define your table using the `@Table` attribute:
   /// ```swift
   /// @Table
   /// struct Document: Identifiable {
