@@ -35,7 +35,7 @@ struct Vec0QueryTests {
 
   @Test("Vec0 Match Builds KNN SQL With Limit And Distance Order")
   func vec0MatchWithLimitSQL() async throws {
-    let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+    let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
     let query =
       Embedding
       .where { $0.embedding.match(queryVector) }
@@ -153,7 +153,7 @@ struct Vec0QueryTests {
 
   @Test("Vec0 Match Builds KNN SQL With Explicit K Constraint")
   func vec0MatchWithKSQL() async throws {
-    let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+    let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
     let query =
       Embedding
       .where { $0.embedding.match(queryVector) }
@@ -405,7 +405,7 @@ struct Vec0QueryTests {
 
   @Test("Vec DistanceL2 Can Be Used In Select")
   func vecDistanceL2Query() async throws {
-    let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.5, 0.5, 0.5])
+    let queryVector: [Float].VectorBytesRepresentation = [0.5, 0.5, 0.5]
     let query =
       Embedding.select { embeddings in
         Vec.distanceL2(embeddings.embedding, to: queryVector)
@@ -480,7 +480,7 @@ struct Vec0QueryTests {
 
   @Test("Vec Add Can Be Selected Alongside An Embedding")
   func vecAddQuery() async throws {
-    let additive = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+    let additive: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
     let query =
       Embedding.select { embeddings in
         Vec.add(embeddings.embedding, additive)
@@ -1225,7 +1225,7 @@ struct Vec0QueryTests {
 
   @Test("Vec DistanceL1 Is Available For Queries")
   func vecDistanceL1Query() async throws {
-    let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+    let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
     let query =
       Embedding.select { embeddings in
         Vec.distanceL1(embeddings.embedding, to: queryVector)
@@ -1300,7 +1300,7 @@ struct Vec0QueryTests {
 
   @Test("Vec DistanceCosine Is Available For Queries")
   func vecDistanceCosineQuery() async throws {
-    let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.2, 0.3, 0.4])
+    let queryVector: [Float].VectorBytesRepresentation = [0.2, 0.3, 0.4]
     let query =
       Embedding.select { embeddings in
         Vec.distanceCosine(embeddings.embedding, to: queryVector)
@@ -1375,7 +1375,7 @@ struct Vec0QueryTests {
 
   @Test("Vec DistanceHamming Is Available For Queries")
   func vecDistanceHammingQuery() async throws {
-    let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.3, 0.4, 0.5])
+    let queryVector: [Float].VectorBytesRepresentation = [0.3, 0.4, 0.5]
     let query =
       Embedding.select { embeddings in
         Vec.distanceHamming(embeddings.embedding, to: queryVector)
@@ -1548,7 +1548,7 @@ struct Vec0QueryTests {
 
   @Test("Vec Sub Can Be Selected")
   func vecSubQuery() async throws {
-    let vector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.1, 0.1])
+    let vector: [Float].VectorBytesRepresentation = [0.1, 0.1, 0.1]
     let query =
       Embedding.select { embeddings in
         Vec.sub(embeddings.embedding, vector)

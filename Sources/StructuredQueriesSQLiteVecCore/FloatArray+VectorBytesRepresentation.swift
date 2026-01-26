@@ -42,6 +42,12 @@ extension Array where Element == Float {
   }
 }
 
+extension Array.VectorBytesRepresentation: ExpressibleByArrayLiteral {
+  public init(arrayLiteral elements: Float...) {
+    self.init(queryOutput: elements)
+  }
+}
+
 // MARK: - InlineArray
 
 #if swift(>=6.2)
