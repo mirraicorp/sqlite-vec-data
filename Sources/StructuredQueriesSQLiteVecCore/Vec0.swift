@@ -31,7 +31,7 @@ extension TableDefinition where QueryValue: Vec0 {
   /// The distance value produced by a vec0 `match` query.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding
   ///   .where { $0.embedding.match(queryVector) }
   ///   .order { $0.distance.asc() }
@@ -48,7 +48,7 @@ extension TableDefinition where QueryValue: Vec0 {
   /// The `k` rank produced by a vec0 `match` query.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding
   ///   .where { $0.embedding.match(queryVector) }
   ///   .select { ($0.label, $0.k) }
@@ -68,7 +68,7 @@ extension TableColumnExpression where Root: Vec0, Value: VectorBytesRepresentabl
   /// Matches a query vector against a vec0 column.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding
   ///   .where { $0.embedding.match(queryVector) }
   ///   .select { $0.label }
@@ -92,9 +92,10 @@ extension TableColumnExpression where Root: Vec0, Value: VectorBytesRepresentabl
 extension TableColumnExpression
 where Root: Vec0, Value: VectorBytesRepresentable {
   /// Returns the L2 distance between this column and a query vector.
+  /// This calls sqlite-vec's `vec_distance_l2` function.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   $0.embedding.distanceL2(to: queryVector)
   /// }
@@ -109,9 +110,10 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Returns the L1 distance between this column and a query vector.
+  /// This calls sqlite-vec's `vec_distance_l1` function.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   $0.embedding.distanceL1(to: queryVector)
   /// }
@@ -126,9 +128,10 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Returns the cosine distance between this column and a query vector.
+  /// This calls sqlite-vec's `vec_distance_cosine` function.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   $0.embedding.distanceCosine(to: queryVector)
   /// }
@@ -143,9 +146,10 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Returns the Hamming distance between this column and a query vector.
+  /// This calls sqlite-vec's `vec_distance_hamming` function.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   $0.embedding.distanceHamming(to: queryVector)
   /// }
@@ -160,6 +164,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Returns the length of the vector stored in this column.
+  /// This calls sqlite-vec's `vec_length` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -173,6 +178,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Returns the sqlite-vec type string for this column.
+  /// This calls sqlite-vec's `vec_type` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -186,6 +192,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Returns the JSON representation of the vector stored in this column.
+  /// This calls sqlite-vec's `vec_to_json` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -199,9 +206,10 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Adds a query vector to this column.
+  /// This calls sqlite-vec's `vec_add` function.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   $0.embedding.add(queryVector)
   /// }
@@ -216,9 +224,10 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Subtracts a query vector from this column.
+  /// This calls sqlite-vec's `vec_sub` function.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   $0.embedding.sub(queryVector)
   /// }
@@ -233,6 +242,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Extracts a slice of the vector stored in this column.
+  /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -257,6 +267,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Normalizes the vector stored in this column.
+  /// This calls sqlite-vec's `vec_normalize` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -270,6 +281,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Converts the vector stored in this column to an f32 representation.
+  /// This calls sqlite-vec's `vec_f32` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -283,6 +295,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Converts the vector stored in this column to a bit representation.
+  /// This calls sqlite-vec's `vec_bit` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -296,6 +309,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Converts the vector stored in this column to an int8 representation.
+  /// This calls sqlite-vec's `vec_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -309,6 +323,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Quantizes the vector stored in this column to int8.
+  /// This calls sqlite-vec's `vec_quantize_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -327,6 +342,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   }
 
   /// Quantizes the vector stored in this column to a binary representation.
+  /// This calls sqlite-vec's `vec_quantize_binary` function.
   ///
   /// ```swift
   /// let query = Embedding.select {

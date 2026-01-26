@@ -5,7 +5,7 @@ public enum Vec {
   /// Returns the L2 distance between a vector expression and a query vector.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.distanceL2($0.embedding, to: queryVector)
   /// }
@@ -25,7 +25,7 @@ public enum Vec {
   /// Returns the L1 distance between a vector expression and a query vector.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.distanceL1($0.embedding, to: queryVector)
   /// }
@@ -45,7 +45,7 @@ public enum Vec {
   /// Returns the cosine distance between a vector expression and a query vector.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.distanceCosine($0.embedding, to: queryVector)
   /// }
@@ -65,7 +65,7 @@ public enum Vec {
   /// Returns the Hamming distance between a vector expression and a query vector.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.distanceHamming($0.embedding, to: queryVector)
   /// }
@@ -133,7 +133,7 @@ public enum Vec {
   /// Adds a query vector to an expression and returns the result in the requested representation.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.add($0.embedding, queryVector, as: [Float].VectorBytesRepresentation.self)
   /// }
@@ -155,7 +155,7 @@ public enum Vec {
   /// Adds a query vector to an expression and returns the result as a float vector.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.add($0.embedding, queryVector)
   /// }
@@ -175,7 +175,7 @@ public enum Vec {
   /// Subtracts a query vector from an expression and returns the result in the requested representation.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.sub($0.embedding, queryVector, as: [Float].VectorBytesRepresentation.self)
   /// }
@@ -197,7 +197,7 @@ public enum Vec {
   /// Subtracts a query vector from an expression and returns the result as a float vector.
   ///
   /// ```swift
-  /// let queryVector = [Float].VectorBytesRepresentation(queryOutput: [0.1, 0.2, 0.3])
+  /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
   /// let query = Embedding.select {
   ///   Vec.sub($0.embedding, queryVector)
   /// }
