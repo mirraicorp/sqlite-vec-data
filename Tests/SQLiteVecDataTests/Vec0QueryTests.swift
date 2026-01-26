@@ -3093,8 +3093,9 @@ struct Vec0QueryTests {
 
       let records = (0..<50)
         .map { index in
-          Embedding(
-            embedding: [Float(index), Float(index + 1), Float(index + 2)],
+          let index = Float(index)
+          return Embedding(
+            embedding: [index, index + 1, index + 2],
             label: "item-\(index)"
           )
         }
