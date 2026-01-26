@@ -94,7 +94,7 @@ public enum Vec {
   /// - Returns: A query expression for the vector length.
   public static func length(
     _ expression: some QueryExpression<some VectorBytesRepresentable>
-  ) -> some QueryExpression<Double?> {
+  ) -> some QueryExpression<Double> {
     SQLQueryExpression("vec_length(\(expression))")
   }
 
@@ -110,7 +110,7 @@ public enum Vec {
   /// - Returns: A query expression for the type string.
   public static func type(
     _ expression: some QueryExpression<some VectorBytesRepresentable>
-  ) -> some QueryExpression<String?> {
+  ) -> some QueryExpression<String> {
     SQLQueryExpression("vec_type(\(expression))")
   }
 
@@ -126,7 +126,7 @@ public enum Vec {
   /// - Returns: A query expression for the JSON string.
   public static func toJSON(
     _ expression: some QueryExpression<some VectorBytesRepresentable>
-  ) -> some QueryExpression<String?> {
+  ) -> some QueryExpression<String> {
     SQLQueryExpression("vec_to_json(\(expression))")
   }
 

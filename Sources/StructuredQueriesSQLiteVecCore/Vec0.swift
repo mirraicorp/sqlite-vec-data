@@ -37,7 +37,7 @@ extension TableDefinition where QueryValue: Vec0 {
   ///   .order { $0.distance.asc() }
   ///   .select { ($0.label, $0.distance) }
   /// ```
-  public var distance: some QueryExpression<Double?> {
+  public var distance: some QueryExpression<Double> {
     SQLQueryExpression(
       """
       \(QueryValue.self)."distance"
@@ -53,7 +53,7 @@ extension TableDefinition where QueryValue: Vec0 {
   ///   .where { $0.embedding.match(queryVector) }
   ///   .select { ($0.label, $0.k) }
   /// ```
-  public var k: some QueryExpression<Int?> {
+  public var k: some QueryExpression<Int> {
     SQLQueryExpression(
       """
       \(QueryValue.self)."k"
@@ -173,7 +173,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   /// ```
   ///
   /// - Returns: A query expression for the vector length.
-  public func length() -> some QueryExpression<Double?> {
+  public func length() -> some QueryExpression<Double> {
     Vec.length(self)
   }
 
@@ -187,7 +187,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   /// ```
   ///
   /// - Returns: A query expression for the type string.
-  public func type() -> some QueryExpression<String?> {
+  public func type() -> some QueryExpression<String> {
     Vec.type(self)
   }
 
@@ -201,7 +201,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
   /// ```
   ///
   /// - Returns: A query expression for the JSON string.
-  public func toJSON() -> some QueryExpression<String?> {
+  public func toJSON() -> some QueryExpression<String> {
     Vec.toJSON(self)
   }
 
