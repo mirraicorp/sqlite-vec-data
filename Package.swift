@@ -24,7 +24,16 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.4.3")
   ],
   targets: [
-    .target(name: "CSQLiteVec"),
+    .target(
+      name: "CSQLiteVec",
+      cSettings: [
+        .define(
+          "SQLITE_VEC_ENABLE_NEON",
+          to: "1",
+          .when(platforms: [.iOS, .macOS, .tvOS, .watchOS, .visionOS])
+        )
+      ]
+    ),
     .target(
       name: "StructuredQueriesSQLiteVecCore",
       dependencies: [
