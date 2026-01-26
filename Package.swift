@@ -43,6 +43,7 @@ let package = Package(
       name: "SQLiteVecDataTests",
       dependencies: [
         "SQLiteVecData",
+        .product(name: "StructuredQueriesTestSupport", package: "swift-structured-queries"),
         .product(name: "IssueReportingTestSupport", package: "xctest-dynamic-overlay")
       ]
     )
