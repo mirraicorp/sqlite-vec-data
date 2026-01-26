@@ -45,7 +45,7 @@ struct Embedding: Vec0 {
   var embedding: EmbeddingVector<1536>
 }
 
-let queryVector = EmbeddingVector<3>([0.1, 0.2, 0.3])
+let queryVector = EmbeddingVector<1536>([...])
 let query = Embedding
   .where { $0.embedding.match(queryVector) }
   .select { ($0.id, $0.distance) }
