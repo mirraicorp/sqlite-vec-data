@@ -15,28 +15,65 @@ import StructuredQueriesCore
 #if swift(>=6.2)
   // MARK: - EmbeddingVector
 
+  /// A fixed-size float array of embeddings that conforms to various Standard Library protocols.
+  ///
+  /// Generally, prefer this type over using `InlineArray` if you want Hashability and Codable
+  /// support.
+  ///
+  /// ```sql
+  /// CREATE VIRTUAL TABLE documents USING vec0(id TEXT PRIMARY KEY, embedding FLOAT[1536]);
+  /// ```
+  ///
+  /// ```swift
+  /// @Table
+  /// struct Document: Identifiable {
+  ///   let id: UUID
+  ///   var embedding: EmbeddingVector<1536>
+  /// }
+  /// ```
   @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *)
   public struct EmbeddingVector<let count: Int>: Sendable {
+    /// The underlying fixed-size storage for the vector.
     public var array: [count of Float]
 
+    /// Creates a vector from a fixed-size array of floats.
+    ///
+    /// - Parameter array: The vector elements.
     public init(_ array: [count of Float]) {
       self.array = array
     }
 
+    /// Creates a vector by generating each element with a closure.
+    ///
+    /// - Parameter body: A closure that returns the element at the given index.
+    /// - Throws: Rethrows any error thrown by `body`.
     public init<E: Error>(_ body: (Int) throws(E) -> Float) throws(E) {
       self.array = try [count of Float](body)
     }
 
+    /// Creates a vector by providing the first element and a generator for the rest.
+    ///
+    /// - Parameters:
+    ///   - first: The first element.
+    ///   - next: A closure that returns the next element given the previous one.
+    /// - Throws: Rethrows any error thrown by `next`.
     public init<E: Error>(first: Float, next: (Float) throws(E) -> Float) throws(E) {
       self.array = try [count of Float](first: first, next: next)
     }
 
+    /// Creates a vector by initializing its storage with a span.
+    ///
+    /// - Parameter initializer: A closure that writes elements into the span.
+    /// - Throws: Rethrows any error thrown by `initializer`.
     public init<E: Error>(
       initializingWith initializer: (inout OutputSpan<Float>) throws(E) -> Void
     ) throws(E) {
       self.array = try [count of Float](initializingWith: initializer)
     }
 
+    /// Creates a vector by repeating a value.
+    ///
+    /// - Parameter value: The value to repeat.
     public init(repeating value: Float) {
       self.array = [count of Float](repeating: value)
     }

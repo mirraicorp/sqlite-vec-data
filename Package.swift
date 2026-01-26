@@ -10,6 +10,7 @@ let package = Package(
     .library(name: "SQLiteVecData", targets: ["SQLiteVecData"])
   ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(
       url: "https://github.com/pointfreeco/sqlite-data",

@@ -2,7 +2,9 @@ import StructuredQueriesCore
 
 // MARK: - VectorBytesRepresentable
 
+/// A type that can be represented as vector bytes for queries.
 public protocol VectorBytesRepresentable {
+  /// The query representation for the vector bytes.
   associatedtype VectorBytesRepresentation: QueryBindable & QueryDecodable & QueryRepresentable
 }
 
