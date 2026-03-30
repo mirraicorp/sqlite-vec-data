@@ -225,7 +225,142 @@ public enum Vec {
     Self.sub(expression, vector, as: [Float].VectorBytesRepresentation.self)
   }
 
-  /// Extracts a slice from a vector expression and returns the result in the requested representation.
+  /// Extracts a slice from a vector expression using a start index and exclusive end index.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, start: 0, end: 3, as: [Float].VectorBytesRepresentation.self)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - start: The start index.
+  ///   - end: The exclusive end index.
+  ///   - result: The result representation type.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice<T: VectorBytesRepresentable & QueryBindable>(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    start: Int,
+    end: Int,
+    as result: T.Type
+  ) -> some QueryExpression<T> {
+    SQLQueryExpression("vec_slice(\(expression), \(raw: start), \(raw: end))")
+  }
+
+  /// Extracts a slice from a vector expression using a start index and exclusive end index.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, start: 0, end: 3)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - start: The start index.
+  ///   - end: The exclusive end index.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    start: Int,
+    end: Int
+  ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
+    Self.slice(
+      expression,
+      start: start,
+      end: end,
+      as: [Float].VectorBytesRepresentation.self
+    )
+  }
+
+  /// Extracts a slice from a vector expression using a half-open range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0..<3, as: [Float].VectorBytesRepresentation.self)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The half-open range to extract.
+  ///   - result: The result representation type.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice<T: VectorBytesRepresentable & QueryBindable>(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: Range<Int>,
+    as result: T.Type
+  ) -> some QueryExpression<T> {
+    Self.slice(expression, start: range.lowerBound, end: range.upperBound, as: result)
+  }
+
+  /// Extracts a slice from a vector expression using a half-open range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0..<3)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The half-open range to extract.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: Range<Int>
+  ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
+    Self.slice(expression, range: range, as: [Float].VectorBytesRepresentation.self)
+  }
+
+  /// Extracts a slice from a vector expression using a closed range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0...2, as: [Float].VectorBytesRepresentation.self)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The closed range to extract.
+  ///   - result: The result representation type.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice<T: VectorBytesRepresentable & QueryBindable>(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: ClosedRange<Int>,
+    as result: T.Type
+  ) -> some QueryExpression<T> {
+    Self.slice(expression, start: range.lowerBound, end: range.upperBound + 1, as: result)
+  }
+
+  /// Extracts a slice from a vector expression using a closed range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0...2)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The closed range to extract.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: ClosedRange<Int>
+  ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
+    Self.slice(expression, range: range, as: [Float].VectorBytesRepresentation.self)
+  }
+
+  /// Extracts a slice from a vector expression using a start index and length.
   /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
@@ -246,10 +381,10 @@ public enum Vec {
     length: Int,
     as result: T.Type
   ) -> some QueryExpression<T> {
-    SQLQueryExpression("vec_slice(\(expression), \(raw: start), \(raw: length))")
+    Self.slice(expression, range: start..<(start + length), as: result)
   }
 
-  /// Extracts a slice from a vector expression and returns the result as a float vector.
+  /// Extracts a slice from a vector expression using a start index and length.
   /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
@@ -268,12 +403,7 @@ public enum Vec {
     start: Int,
     length: Int
   ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
-    Self.slice(
-      expression,
-      start: start,
-      length: length,
-      as: [Float].VectorBytesRepresentation.self
-    )
+    Self.slice(expression, range: start..<(start + length))
   }
 
   /// Normalizes a vector expression and returns the result in the requested representation.

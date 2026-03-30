@@ -241,7 +241,61 @@ where Root: Vec0, Value: VectorBytesRepresentable {
     Vec.sub(self, vector, as: Value.self)
   }
 
-  /// Extracts a slice of the vector stored in this column.
+  /// Extracts a slice of the vector stored in this column using a start index and exclusive end index.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   $0.embedding.slice(start: 0, end: 3)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - start: The start index.
+  ///   - end: The exclusive end index.
+  /// - Returns: A query expression for the sliced vector.
+  public func slice(
+    start: Int,
+    end: Int
+  ) -> some QueryExpression<Value> {
+    Vec.slice(self, start: start, end: end, as: Value.self)
+  }
+
+  /// Extracts a slice of the vector stored in this column using a half-open range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   $0.embedding.slice(0..<3)
+  /// }
+  /// ```
+  ///
+  /// - Parameter range: The half-open range to extract.
+  /// - Returns: A query expression for the sliced vector.
+  public func slice(
+    _ range: Range<Int>
+  ) -> some QueryExpression<Value> {
+    Vec.slice(self, range: range, as: Value.self)
+  }
+
+  /// Extracts a slice of the vector stored in this column using a closed range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   $0.embedding.slice(0...2)
+  /// }
+  /// ```
+  ///
+  /// - Parameter range: The closed range to extract.
+  /// - Returns: A query expression for the sliced vector.
+  public func slice(
+    _ range: ClosedRange<Int>
+  ) -> some QueryExpression<Value> {
+    Vec.slice(self, range: range, as: Value.self)
+  }
+
+  /// Extracts a slice of the vector stored in this column using a start index and length.
   /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
@@ -258,12 +312,7 @@ where Root: Vec0, Value: VectorBytesRepresentable {
     start: Int,
     length: Int
   ) -> some QueryExpression<Value> {
-    Vec.slice(
-      self,
-      start: start,
-      length: length,
-      as: Value.self
-    )
+    self.slice(start..<start + length)
   }
 
   /// Normalizes the vector stored in this column.
