@@ -3,6 +3,7 @@ import StructuredQueriesCore
 /// A namespace for SQLiteVec SQL functions.
 public enum Vec {
   /// Returns the L2 distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_l2` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -23,6 +24,7 @@ public enum Vec {
   }
 
   /// Returns the L1 distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_l1` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -43,6 +45,7 @@ public enum Vec {
   }
 
   /// Returns the cosine distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_cosine` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -63,6 +66,7 @@ public enum Vec {
   }
 
   /// Returns the Hamming distance between a vector expression and a query vector.
+  /// This calls sqlite-vec's `vec_distance_hamming` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -83,6 +87,7 @@ public enum Vec {
   }
 
   /// Returns the length of a vector expression.
+  /// This calls sqlite-vec's `vec_length` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -99,6 +104,7 @@ public enum Vec {
   }
 
   /// Returns the sqlite-vec type string for a vector expression.
+  /// This calls sqlite-vec's `vec_type` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -115,6 +121,7 @@ public enum Vec {
   }
 
   /// Returns a JSON string for a vector expression.
+  /// This calls sqlite-vec's `vec_to_json` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -131,6 +138,7 @@ public enum Vec {
   }
 
   /// Adds a query vector to an expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_add` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -153,6 +161,7 @@ public enum Vec {
   }
 
   /// Adds a query vector to an expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_add` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -173,6 +182,7 @@ public enum Vec {
   }
 
   /// Subtracts a query vector from an expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_sub` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -195,6 +205,7 @@ public enum Vec {
   }
 
   /// Subtracts a query vector from an expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_sub` function.
   ///
   /// ```swift
   /// let queryVector: [Float].VectorBytesRepresentation = [0.1, 0.2, 0.3]
@@ -214,7 +225,143 @@ public enum Vec {
     Self.sub(expression, vector, as: [Float].VectorBytesRepresentation.self)
   }
 
-  /// Extracts a slice from a vector expression and returns the result in the requested representation.
+  /// Extracts a slice from a vector expression using a start index and exclusive end index.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, start: 0, end: 3, as: [Float].VectorBytesRepresentation.self)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - start: The start index.
+  ///   - end: The exclusive end index.
+  ///   - result: The result representation type.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice<T: VectorBytesRepresentable & QueryBindable>(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    start: Int,
+    end: Int,
+    as result: T.Type
+  ) -> some QueryExpression<T> {
+    SQLQueryExpression("vec_slice(\(expression), \(raw: start), \(raw: end))")
+  }
+
+  /// Extracts a slice from a vector expression using a start index and exclusive end index.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, start: 0, end: 3)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - start: The start index.
+  ///   - end: The exclusive end index.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    start: Int,
+    end: Int
+  ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
+    Self.slice(
+      expression,
+      start: start,
+      end: end,
+      as: [Float].VectorBytesRepresentation.self
+    )
+  }
+
+  /// Extracts a slice from a vector expression using a half-open range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0..<3, as: [Float].VectorBytesRepresentation.self)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The half-open range to extract.
+  ///   - result: The result representation type.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice<T: VectorBytesRepresentable & QueryBindable>(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: Range<Int>,
+    as result: T.Type
+  ) -> some QueryExpression<T> {
+    Self.slice(expression, start: range.lowerBound, end: range.upperBound, as: result)
+  }
+
+  /// Extracts a slice from a vector expression using a half-open range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0..<3)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The half-open range to extract.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: Range<Int>
+  ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
+    Self.slice(expression, range: range, as: [Float].VectorBytesRepresentation.self)
+  }
+
+  /// Extracts a slice from a vector expression using a closed range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0...2, as: [Float].VectorBytesRepresentation.self)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The closed range to extract.
+  ///   - result: The result representation type.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice<T: VectorBytesRepresentable & QueryBindable>(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: ClosedRange<Int>,
+    as result: T.Type
+  ) -> some QueryExpression<T> {
+    Self.slice(expression, start: range.lowerBound, end: range.upperBound + 1, as: result)
+  }
+
+  /// Extracts a slice from a vector expression using a closed range.
+  /// This calls sqlite-vec's `vec_slice` function.
+  ///
+  /// ```swift
+  /// let query = Embedding.select {
+  ///   Vec.slice($0.embedding, range: 0...2)
+  /// }
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - expression: The vector expression to slice.
+  ///   - range: The closed range to extract.
+  /// - Returns: A query expression for the sliced vector.
+  public static func slice(
+    _ expression: some QueryExpression<some VectorBytesRepresentable>,
+    range: ClosedRange<Int>
+  ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
+    Self.slice(expression, range: range, as: [Float].VectorBytesRepresentation.self)
+  }
+
+  /// Extracts a slice from a vector expression using a start index and length.
+  /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -234,10 +381,11 @@ public enum Vec {
     length: Int,
     as result: T.Type
   ) -> some QueryExpression<T> {
-    SQLQueryExpression("vec_slice(\(expression), \(raw: start), \(raw: length))")
+    Self.slice(expression, range: start..<(start + length), as: result)
   }
 
-  /// Extracts a slice from a vector expression and returns the result as a float vector.
+  /// Extracts a slice from a vector expression using a start index and length.
+  /// This calls sqlite-vec's `vec_slice` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -255,15 +403,11 @@ public enum Vec {
     start: Int,
     length: Int
   ) -> some QueryExpression<[Float].VectorBytesRepresentation> {
-    Self.slice(
-      expression,
-      start: start,
-      length: length,
-      as: [Float].VectorBytesRepresentation.self
-    )
+    Self.slice(expression, range: start..<(start + length))
   }
 
   /// Normalizes a vector expression and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_normalize` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -283,6 +427,7 @@ public enum Vec {
   }
 
   /// Normalizes a vector expression and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_normalize` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -299,6 +444,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an f32 representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_f32` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -318,6 +464,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an f32 representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_f32` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -334,6 +481,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to a bit representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_bit` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -353,6 +501,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to a bit representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_bit` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -369,6 +518,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an int8 representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -388,6 +538,7 @@ public enum Vec {
   }
 
   /// Converts a vector expression to an int8 representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -404,6 +555,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to int8 and returns the result in the requested representation.
+  /// This calls sqlite-vec's `vec_quantize_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -425,6 +577,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to int8 and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_quantize_int8` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -448,6 +601,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to a binary representation and returns the result in the requested type.
+  /// This calls sqlite-vec's `vec_quantize_binary` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
@@ -467,6 +621,7 @@ public enum Vec {
   }
 
   /// Quantizes a vector expression to a binary representation and returns the result as a float vector.
+  /// This calls sqlite-vec's `vec_quantize_binary` function.
   ///
   /// ```swift
   /// let query = Embedding.select {
