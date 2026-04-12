@@ -14,12 +14,12 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(
       url: "https://github.com/pointfreeco/sqlite-data",
-      from: "1.3.0",
+      from: "1.6.1",
       traits: ["SQLiteDataTagged"]
     ),
     .package(
       url: "https://github.com/pointfreeco/swift-structured-queries",
-      from: "0.25.1",
+      from: "0.31.1",
       traits: ["StructuredQueriesTagged"]
     ),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.4.3")
