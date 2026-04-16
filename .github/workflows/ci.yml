@@ -26,5 +26,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: "Install SQLite"
+        run: |
+          apt-get update
+          apt-get install -y libsqlite3-dev
       - name: "Test Swift Package on Linux"
         run: swift test
