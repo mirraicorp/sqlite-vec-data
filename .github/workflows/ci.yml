@@ -31,5 +31,5 @@ jobs:
         run: |
           apt-get update
           apt-get install -y libsqlite3-dev
-      - name: "Build Swift Package on Linux"
-        run: swift build
+      - name: "Test Swift Package on Linux"
+        run: swift test

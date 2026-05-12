@@ -1,5 +1,6 @@
 import CSQLiteVec
 import GRDB
+import SQLite3
 
 extension Database {
   /// Loads the sqlite-vec extension into the current database connection.
@@ -31,7 +32,11 @@ extension Database {
   /// }
   /// ```
   public func loadSQLiteVecExtension() throws {
-    let code = sqlite3_vec_init(self.sqliteConnection, nil, nil)
+    #if canImport(Darwin)
+      let code = sqlite3_vec_init(self.sqliteConnection, nil, nil)
+    #else
+      let code = sqlite3_auto_extension(sqlite3_vec_init)
+    #endif
     let resultCode = ResultCode(rawValue: code)
     if resultCode != .SQLITE_OK {
       throw DatabaseError(resultCode: resultCode, message: "Failed to load SQLiteVec extension.")
