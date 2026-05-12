@@ -6,8 +6,8 @@ import Testing
 struct FloatArrayVectorBytesRepresentationTests {
   private let database = try! DatabaseQueue()
 
-  init() throws {
-    try self.database.write { db in
+  init() async throws {
+    try await self.database.write { db in
       try db.loadSQLiteVecExtension()
       try #sql(
         """
