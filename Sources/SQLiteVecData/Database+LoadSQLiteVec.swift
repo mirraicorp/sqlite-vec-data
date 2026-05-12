@@ -34,7 +34,15 @@ extension Database {
     #if canImport(Darwin)
       let code = sqlite3_vec_init(self.sqliteConnection, nil, nil)
     #else
-      let code = sqlite3_auto_extension(sqlite3_vec_init)
+      let vecInit:
+        @convention(c) (
+          OpaquePointer?,
+          UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?,
+          UnsafePointer<sqlite3_api_routines>?
+        ) -> Int32 = sqlite3_vec_init
+      let code = sqlite3_auto_extension(
+        unsafeBitCast(vecInit, to: (@convention(c) () -> Void).self)
+      )
     #endif
     let resultCode = ResultCode(rawValue: code)
     if resultCode != .SQLITE_OK {
