@@ -1,15 +1,6 @@
 import SQLiteVecData
 import Testing
 
-/// A Swift Testing suite trait that registers sqlite-vec auto extensions for non-Apple platform
-/// tests.
-///
-/// Apply this trait to any test suite that opens SQLite connections before each test explicitly
-/// loads sqlite-vec into the current connection. On Linux, the trait registers sqlite-vec as a
-/// process-global auto extension exactly once, before the suite runs, so connections opened by the
-/// suite can use `vec0` tables and vector functions.
-///
-
 public struct _SQLiteVecAutoExtensionTrait: SuiteTrait {
   private static let didRegisterSQLiteVecAutoExtension = Lock(false)
 
