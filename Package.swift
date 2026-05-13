@@ -7,7 +7,8 @@ let package = Package(
   name: "sqlite-vec-data",
   platforms: [.iOS(.v16), .macOS(.v13), .tvOS(.v16), .watchOS(.v9)],
   products: [
-    .library(name: "SQLiteVecData", targets: ["SQLiteVecData"])
+    .library(name: "SQLiteVecData", targets: ["SQLiteVecData"]),
+    .library(name: "SQLiteVecDataTestSupport", targets: ["SQLiteVecDataTestSupport"])
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
@@ -49,10 +50,17 @@ let package = Package(
         .product(name: "SQLiteData", package: "sqlite-data")
       ]
     ),
+    .target(
+      name: "SQLiteVecDataTestSupport",
+      dependencies: [
+        "SQLiteVecData"
+      ]
+    ),
     .testTarget(
       name: "SQLiteVecDataTests",
       dependencies: [
         "SQLiteVecData",
+        "SQLiteVecDataTestSupport",
         .product(name: "StructuredQueriesTestSupport", package: "swift-structured-queries"),
         .product(name: "IssueReportingTestSupport", package: "xctest-dynamic-overlay")
       ]

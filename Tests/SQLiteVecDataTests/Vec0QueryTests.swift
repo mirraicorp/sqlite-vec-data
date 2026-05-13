@@ -1,15 +1,20 @@
 import SQLiteVecData
+import SQLiteVecDataTestSupport
 import SnapshotTesting
 import StructuredQueriesTestSupport
 import Testing
 
-@Suite("Vec0Query tests")
+@Suite("Vec0Query tests", .sqliteVecAutoExtension)
 struct Vec0QueryTests {
-  private let database = try! DatabaseQueue()
+  private let database: DatabaseQueue
 
   init() async throws {
+    self.database = try DatabaseQueue()
+
     try await self.database.write { db in
-      try db.loadSQLiteVecExtension()
+      #if canImport(Darwin)
+        try db.loadSQLiteVecExtension()
+      #endif
       try #sql(
         """
         CREATE VIRTUAL TABLE Embeddings USING vec0(

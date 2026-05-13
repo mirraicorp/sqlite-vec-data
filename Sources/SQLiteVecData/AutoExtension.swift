@@ -34,12 +34,6 @@ import GRDBSQLite
 )
 /// Registers sqlite-vec as a process-global SQLite auto extension.
 ///
-/// Call this once during process startup on non-Apple platforms, before opening any SQLite
-/// connections that should support `vec0` tables and vector functions.
-///
-/// Auto extensions only affect connections opened after registration. Existing connections are
-/// not updated retroactively.
-///
 /// On Apple platforms, use ``Database/loadSQLiteVecExtension()`` to load sqlite-vec into each
 /// database connection instead.
 public func registerSQLiteVecAutoExtension() throws {
