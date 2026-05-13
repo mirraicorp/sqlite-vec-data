@@ -7,20 +7,21 @@ let package = Package(
   name: "sqlite-vec-data",
   platforms: [.iOS(.v16), .macOS(.v13), .tvOS(.v16), .watchOS(.v9)],
   products: [
-    .library(name: "SQLiteVecData", targets: ["SQLiteVecData"])
+    .library(name: "SQLiteVecData", targets: ["SQLiteVecData"]),
+    .library(name: "SQLiteVecDataTestSupport", targets: ["SQLiteVecDataTestSupport"])
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(
-      url: "https://github.com/pointfreeco/sqlite-data",
-      from: "1.3.0",
-      traits: ["SQLiteDataTagged"]
+      url: "https://github.com/pointfreeco/swift-structured-queries",
+      from: "0.31.1",
+      traits: ["StructuredQueriesTagged"]
     ),
     .package(
-      url: "https://github.com/pointfreeco/swift-structured-queries",
-      from: "0.25.1",
-      traits: ["StructuredQueriesTagged"]
+      url: "https://github.com/pointfreeco/sqlite-data",
+      from: "1.6.1",
+      traits: ["SQLiteDataTagged"]
     ),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.4.3")
   ],
@@ -49,10 +50,17 @@ let package = Package(
         .product(name: "SQLiteData", package: "sqlite-data")
       ]
     ),
+    .target(
+      name: "SQLiteVecDataTestSupport",
+      dependencies: [
+        "SQLiteVecData"
+      ]
+    ),
     .testTarget(
       name: "SQLiteVecDataTests",
       dependencies: [
         "SQLiteVecData",
+        "SQLiteVecDataTestSupport",
         .product(name: "StructuredQueriesTestSupport", package: "swift-structured-queries"),
         .product(name: "IssueReportingTestSupport", package: "xctest-dynamic-overlay")
       ]

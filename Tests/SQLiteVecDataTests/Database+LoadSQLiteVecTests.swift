@@ -1,15 +1,18 @@
 import GRDB
 import SQLiteVecData
+import SQLiteVecDataTestSupport
 import Testing
 
-@Suite("DatabaseLoadSQLiteVec tests")
+@Suite("DatabaseLoadSQLiteVec tests", .sqliteVecAutoExtension)
 struct DatabaseLoadSQLiteVecTests {
   @Test("Loads SQLiteVec Extension Successfully")
   func loadsSQLiteVecExtensionSuccessfully() async throws {
     await #expect(throws: Never.self) {
       let database = try DatabaseQueue()
       try await database.write { db in
-        try db.loadSQLiteVecExtension()
+        #if canImport(Darwin)
+          try db.loadSQLiteVecExtension()
+        #endif
 
         try #sql(
           """

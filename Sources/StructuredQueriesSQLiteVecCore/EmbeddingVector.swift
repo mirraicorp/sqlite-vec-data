@@ -90,7 +90,7 @@ import StructuredQueriesCore
         rhs.array.span.withUnsafeBytes { rhsPtr in
           let size = Self.count * MemoryLayout<Float>.stride
           return lhsPtr.baseAddress == rhsPtr.baseAddress
-            || memcmp(lhsPtr.baseAddress, rhsPtr.baseAddress, size) == 0
+            || memcmp(lhsPtr.baseAddress!, rhsPtr.baseAddress!, size) == 0
         }
       }
     }

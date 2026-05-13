@@ -11,6 +11,10 @@ SQLiteVecData bridges SQLiteData and sqlite-vec so you can create vec0 tables an
 
 ## Quick Start
 
+Choose a setup strategy based on the platform where your app runs.
+
+### Apple platforms
+
 Call `loadSQLiteVecExtension` in your database preparation so every connection can use vec0 tables and vector functions.
 
 ```swift
@@ -35,6 +39,29 @@ struct MyApp: App {
     prepareDependencies {
       try! $0.bootstrapDatabase()
     }
+  }
+}
+```
+
+### Non-Apple platforms
+
+Call `registerSQLiteVecAutoExtension()` once during process startup before opening any SQLite
+connections. This registers sqlite-vec as a process-global SQLite auto extension, so only
+connections opened after registration can use vec0 tables and vector functions.
+
+```swift
+import SQLiteVecData
+
+@main
+enum MyApp {
+  static func main() throws {
+    try registerSQLiteVecAutoExtension()
+
+    let database = try SQLiteData.defaultDatabase()
+    var migrator = DatabaseMigrator()
+    try migrator.migrate(database)
+
+    // Start the rest of your application after the database is ready.
   }
 }
 ```

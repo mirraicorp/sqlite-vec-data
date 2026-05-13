@@ -1,12 +1,15 @@
 import CSQLiteVec
 import GRDB
-import SQLite3
 
 extension Database {
   /// Loads the sqlite-vec extension into the current database connection.
   ///
-  /// Call this at application launch using a `Configuration.prepareDatabase` callback so every
-  /// connection loads sqlite-vec.
+  /// On Apple platforms, call this at application launch using a `Configuration.prepareDatabase`
+  /// callback so every connection loads sqlite-vec.
+  ///
+  /// On non-Apple platforms, prefer ``registerSQLiteVecAutoExtension()`` before opening any
+  /// database connections. Process-global auto extension registration only affects connections
+  /// opened after registration.
   ///
   /// ```swift
   /// extension DependencyValues {
