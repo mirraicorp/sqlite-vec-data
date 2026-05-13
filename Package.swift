@@ -13,14 +13,14 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(
-      url: "https://github.com/pointfreeco/sqlite-data",
-      from: "1.6.1",
-      traits: ["SQLiteDataTagged"]
-    ),
-    .package(
       url: "https://github.com/pointfreeco/swift-structured-queries",
       from: "0.31.1",
       traits: ["StructuredQueriesTagged"]
+    ),
+    .package(
+      url: "https://github.com/pointfreeco/sqlite-data",
+      from: "1.6.1",
+      traits: ["SQLiteDataTagged"]
     ),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.4.3")
   ],
