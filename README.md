@@ -113,6 +113,63 @@ let query = Embedding.select {
 }
 ```
 
+## Testing
+
+### Apple platforms
+
+You will need to invoke `Database.loadSQLiteVecExtension()` inside the database preparation configuration block for each new database connection.
+
+```swift
+import SQLiteVecData
+import SQLiteVecDataTestSupport
+import Testing
+
+struct MyDatabaseTests {
+  private let database: any DatabaseWriter
+
+  init() throws {
+    var configuration = Configuration()
+    configuration.prepareDatabase = { db in
+      try db.loadSQLiteVecExtension()
+    }
+    self.database = try SQLiteData.defaultDatabase(configuration: configuration)
+  }
+
+  @Test
+  func myTest() throws {
+    try self.database.write { db in
+      // Run vec0 queries here.
+    }
+  }
+}
+```
+
+### Non-Apple platforms
+
+Apply the `.sqliteVecAutoExtension` Swift Testing trait to the suite to make sure the database connection is opened with SQLite Vec enabled.
+
+```swift
+import SQLiteVecData
+import SQLiteVecDataTestSupport
+import Testing
+
+@Suite(.sqliteVecAutoExtension)
+struct MyDatabaseTests {
+  private let database: any DatabaseWriter
+
+  init() throws {
+    self.database = try SQLiteData.defaultDatabase()
+  }
+
+  @Test
+  func myTest() throws {
+    try self.database.write { db in
+      // Run vec0 queries here.
+    }
+  }
+}
+```
+
 ## EmbeddingVector
 
 `EmbeddingVector` is a Hashable and Codable fixed-length array alternative to `InlineArray`. It is available on iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, and visionOS 26.0, and it can be stored in vec0 tables or used directly as a query binding.
@@ -135,6 +192,8 @@ let query = Embedding
 `SQLiteVecData` is the main integration target that couples SQLiteData with sqlite-vec. It also exports `StructuredQueriesSQLiteVecCore`.
 
 `StructuredQueriesSQLiteVecCore` is a standalone set of query helpers that model sqlite-vec features in StructuredQueries. Use this if you don't plan to use `SQLiteData` directly.
+
+`SQLiteVecDataTestSupport` provides Swift Testing helpers for downstream packages, including the `.sqliteVecAutoExtension` suite trait for Linux test setup.
 
 ## Documentation
 
