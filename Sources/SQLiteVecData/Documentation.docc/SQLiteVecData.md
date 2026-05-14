@@ -85,3 +85,61 @@ struct Embedding: Vec0 {
   var label: String
 }
 ```
+
+### Testing
+
+#### Apple platforms
+
+You will need to invoke ``Database/loadSQLiteVecExtension()`` inside the database preparation configuration block for each new database connection.
+
+```swift
+import SQLiteVecData
+import SQLiteVecDataTestSupport
+import Testing
+
+struct MyDatabaseTests {
+  private let database: any DatabaseWriter
+
+  init() throws {
+    var configuration = Configuration()
+    configuration.prepareDatabase = { db in
+      try db.loadSQLiteVecExtension()
+    }
+    self.database = try SQLiteData.defaultDatabase(configuration: configuration)
+  }
+
+  @Test
+  func myTest() throws {
+    try self.database.write { db in
+      // Run vec0 queries here.
+    }
+  }
+}
+```
+
+#### Non-Apple platforms
+
+Apply the ``Trait/sqliteVecAutoExtension`` Swift Testing trait to the suite to make sure the database connection is opened with SQLite Vec enabled.
+
+```swift
+import SQLiteVecData
+import SQLiteVecDataTestSupport
+import Testing
+
+@Suite(.sqliteVecAutoExtension)
+struct MyDatabaseTests {
+  private let database: any DatabaseWriter
+
+  init() throws {
+    self.database = try SQLiteData.defaultDatabase()
+  }
+
+  @Test
+  func myTest() throws {
+    try self.database.write { db in
+      
+      // Run vec0 queries here.
+    }
+  }
+}
+```
