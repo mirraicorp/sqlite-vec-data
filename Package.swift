@@ -28,6 +28,9 @@ let package = Package(
   targets: [
     .target(
       name: "CSQLiteVec",
+      // sqlite-vec.c is included in sqlite-vec-arch.c, which adds architecture checks
+      // we cannot declare here.
+      exclude: ["sqlite-vec.c"],
       cSettings: [
         .define(
           "SQLITE_VEC_ENABLE_NEON",
